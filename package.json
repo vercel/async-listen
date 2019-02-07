@@ -11,6 +11,9 @@
     "type": "git",
     "url": "git://github.com/zeit/async-listen.git"
   },
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "net",
     "http",
