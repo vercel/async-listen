@@ -8,17 +8,18 @@ test('No arguments', async () => {
 	const address = await listen(server);
 	const match = /^http\:\/\/(.+)\:\d+$/.exec(address);
 	assert(match);
-
-	let [_, host] = match;
-	if (/\[.+\]/.test(host)) {
-		assert(isIPv6(host.substring(1, host.length - 1)));
-	} else {
-		assert(isIPv4(host.substring(1, host.length - 1)));
+	if (match) {
+		let [_, host] = match;
+		if (/\[.+\]/.test(host)) {
+			assert(isIPv6(host.substring(1, host.length - 1)));
+		} else {
+			assert(isIPv4(host.substring(1, host.length - 1)));
+		}
 	}
 });
 
 test('EADDRINUSE is thrown', async () => {
-	let err: NodeJS.ErrnoException;
+	let err: NodeJS.ErrnoException | null = null;
 	const port = 63971;
 	const server = createServer();
 	const address = await listen(server, port);
@@ -30,5 +31,5 @@ test('EADDRINUSE is thrown', async () => {
 		err = _err;
 	}
 	assert(err);
-	assert.equal(err.code, 'EADDRINUSE');
+	assert.equal(err && err.code, 'EADDRINUSE');
 });
