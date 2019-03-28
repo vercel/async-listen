@@ -2,17 +2,18 @@
   "name": "async-listen",
   "version": "1.1.1",
   "description": "`net.Server#listen()` helper that returns a Promise for async / await",
-  "main": "./dist/index",
-  "typings": "./dist/index",
+  "main": "./dist/src/index",
+  "typings": "./dist/src/index",
   "scripts": {
-    "test": "ava"
+    "prepublish": "tsc",
+    "test": "tsc && ava dist/test.js"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/zeit/async-listen.git"
   },
   "files": [
-    "dist"
+    "dist/src"
   ],
   "keywords": [
     "net",
