@@ -1,5 +1,5 @@
 const net = require('net');
-const { default: listen } = require('./');
+const listen = require('./').default;
 
 async function main() {
   const server = net.createServer()
