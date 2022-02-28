@@ -2,8 +2,8 @@
   "name": "async-listen",
   "version": "2.0.0",
   "description": "`net.Server#listen()` helper that returns a Promise for async / await",
-  "main": "./dist/src/index",
-  "typings": "./dist/src/index",
+  "main": "./dist/index",
+  "typings": "./dist/index",
   "scripts": {
     "prepublish": "tsc",
     "build": "tsc",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/zeit/async-listen.git"
+    "url": "git://github.com/vercel/async-listen.git"
   },
   "files": [
     "dist/src"
@@ -26,12 +26,12 @@
     "await",
     "promise"
   ],
-  "author": "Nathan Rajlich <nate@zeit.co>",
+  "contributors": ["Nathan Rajlich <nate@zeit.co>", "Ethan Arrowood <ethan.arrowood@vercel.com>"],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/zeit/async-listen/issues"
+    "url": "https://github.com/vercel/async-listen/issues"
   },
-  "homepage": "https://github.com/zeit/async-listen#readme",
+  "homepage": "https://github.com/vercel/async-listen#readme",
   "devDependencies": {
     "@types/node": "^17.0.21",
     "@types/tap": "^15.0.6",

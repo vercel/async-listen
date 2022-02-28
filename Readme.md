@@ -13,7 +13,7 @@ async function main() {
 	const server = createServer();
 	const address = await listen(server, port);
 	console.log(address);
-	// 'http://127.0.0.1:3000'
+	// URL('http://127.0.0.1:3000')
 }
 
 main().catch(console.error);
