@@ -1,8 +1,9 @@
 import { Server } from 'net';
 import { once } from 'events';
-import { Server as httpServer } from 'http';
+import http from 'http';
+import https from 'https';
 
-export default async function listen (server: Server, ...args: Partial<Parameters<Server['listen']>>): Promise<string | null> {
+export default async function listen (server: Server, ...args: Partial<Parameters<Server['listen']>>): Promise<URL | string | null> {
 	server.listen(...args);
 	await once(server, "listening");
 	const address = server.address();
@@ -10,12 +11,12 @@ export default async function listen (server: Server, ...args: Partial<Parameter
 		return address
 	} else {
 		let protocol
-		if (server instanceof httpServer) protocol = 'http'
+		if (server instanceof http.Server) protocol = 'http'
+		else if (server instanceof https.Server) protocol = 'https'
 		else if (server instanceof Server) protocol = 'tcp'
-		else protocol = 'https'
 		const { address: hostname, port } = address
 		return new URL(
 			`${protocol}://${hostname === '::' ? '[::]' : hostname}:${port}`
-		).toString()
+		)
 	}
 }
