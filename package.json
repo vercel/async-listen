@@ -26,7 +26,7 @@
     "await",
     "promise"
   ],
-  "contributors": ["Nathan Rajlich <nate@zeit.co>", "Ethan Arrowood <ethan.arrowood@vercel.com>"],
+  "contributors": ["Nathan Rajlich <nate@vercel.com>", "Ethan Arrowood <ethan.arrowood@vercel.com>"],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/vercel/async-listen/issues"
