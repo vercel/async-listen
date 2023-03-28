@@ -1,8 +1,14 @@
 # async-listen
 
-`listen()` for use with `async` / `await`.
+Promisify `server.listen` for your HTTP/HTTPS/TCP server.
 
-## Example
+## Install
+
+```
+$ npm install async-listen --save
+```
+
+## Usage
 
 ```typescript
 import listen from 'async-listen';
@@ -12,8 +18,7 @@ async function main() {
 	const port = 3000;
 	const server = createServer();
 	const address = await listen(server, port);
-	console.log(address);
-	// URL('http://127.0.0.1:3000')
+	console.log(address); // => URL('http://127.0.0.1:3000')
 }
 
 main().catch(console.error);
