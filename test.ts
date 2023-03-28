@@ -1,6 +1,6 @@
 import tap from 'tap'
 import listen from './src';
-import { createServer } from 'net';
+import { AddressInfo, createServer } from 'net';
 import http from 'http';
 import https from 'https';
 
@@ -39,4 +39,12 @@ tap.test('EADDRINUSE is thrown', async t => {
 	await t.resolves(listen(server1, port));
 	await t.rejects(listen(server2, port));
 	server1.close()
+})
+
+tap.test('IPv6 support', async t => {
+	const server = http.createServer();
+	const url = await listen(server)
+	t.equal((server.address() as AddressInfo).family, 'IPv6')
+	t.equal((url as URL).hostname, '[::]')
+	server.close()
 })
