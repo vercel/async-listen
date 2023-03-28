@@ -2,7 +2,6 @@ import tap from 'tap'
 import listen from './src';
 import { createServer } from 'net';
 import http from 'http';
-import http2 from 'http2';
 import https from 'https';
 
 tap.test('No arguments', async t => {
