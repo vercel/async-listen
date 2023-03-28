@@ -4,7 +4,6 @@
   "homepage": "https://github.com/vercel/async-listen#readme",
   "version": "2.0.2",
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "contributors": [
     {
       "name": "Ethan Arrowood",
@@ -43,14 +42,17 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.0.2"
   },
+  "engines": {
+    "node": ">= 14"
+  },
   "files": [
-    "Readme.md",
-    "dist/"
+    "dist"
   ],
   "scripts": {
     "build": "tsc",
     "prepublish": "tsc",
     "test": "tap --no-check-coverage --ts"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "types": "./dist/index.d.ts"
 }
