@@ -1,5 +1,5 @@
 import tap from 'tap'
-import listen from './src';
+import { listen } from './src';
 import { AddressInfo, createServer } from 'net';
 import http from 'http';
 import https from 'https';

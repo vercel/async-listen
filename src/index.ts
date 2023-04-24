@@ -9,7 +9,7 @@ const protocol = (server: http.Server | https.Server | net.Server) => {
 	if (server instanceof net.Server) return 'tcp'
 }
 
-export default async function listen(server: net.Server, ...args: Partial<Parameters<net.Server['listen']>>): Promise<URL | string | null> {
+export async function listen(server: net.Server, ...args: Partial<Parameters<net.Server['listen']>>): Promise<URL | string | null> {
 	server.listen(...args);
 	await once(server, "listening");
 	const addressInfo = server.address();
@@ -18,3 +18,5 @@ export default async function listen(server: net.Server, ...args: Partial<Parame
 	const hostname = family === 'IPv6' ? `[${address}]` : address
 	return new URL(`${protocol(server)}://${hostname}:${port}/`)
 }
+
+export default listen;
