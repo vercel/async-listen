@@ -42,60 +42,56 @@ testIf(!isWindows, 'Returns URL for UNIX pipe', async (t) => {
 	server.close();
 });
 
-tap.test('Server autodetect', (t) => {
-	t.test('http', async (t) => {
-		const server = http.createServer();
+tap.test('http', async (t) => {
+	const server = http.createServer();
 
-		// Using `ListenOptions` interface
-		const address = await listen(server, {
-			port: 0,
-			host: '127.0.0.1',
-		});
-
-		t.equal(address.protocol, 'http:');
-		server.close();
+	// Using `ListenOptions` interface
+	const address = await listen(server, {
+		port: 0,
+		host: '127.0.0.1',
 	});
 
-	t.test('https', async (t) => {
-		const server = https.createServer();
+	t.equal(address.protocol, 'http:');
+	server.close();
+});
 
-		// Using `port`, `host` interface
-		const address = await listen(server, 0, '127.0.0.1');
+tap.test('https', async (t) => {
+	const server = https.createServer();
 
-		t.equal(address.protocol, 'https:');
-		server.close();
-	});
+	// Using `port`, `host` interface
+	const address = await listen(server, 0, '127.0.0.1');
 
-	testIf(!isWindows, 'http - UNIX pipe', async (t) => {
-		const socket = 'http.sock';
-		const server = http.createServer();
-		const address = await listen(server, socket);
-		t.equal(address.protocol, 'http+unix:');
-		server.close();
-	});
+	t.equal(address.protocol, 'https:');
+	server.close();
+});
 
-	testIf(!isWindows, 'https - UNIX pipe', async (t) => {
-		const socket = 'https.sock';
-		const server = https.createServer();
-		const address = await listen(server, socket);
-		t.equal(address.protocol, 'https+unix:');
-		server.close();
-	});
+testIf(!isWindows, 'http - UNIX pipe', async (t) => {
+	const socket = 'http.sock';
+	const server = http.createServer();
+	const address = await listen(server, socket);
+	t.equal(address.protocol, 'http+unix:');
+	server.close();
+});
 
-	t.test('Custom protocol', async (t) => {
-		const server = createServer();
+testIf(!isWindows, 'https - UNIX pipe', async (t) => {
+	const socket = 'https.sock';
+	const server = https.createServer();
+	const address = await listen(server, socket);
+	t.equal(address.protocol, 'https+unix:');
+	server.close();
+});
 
-		// @ts-expect-error `protocol` is not defined on `net.Server`
-		server.protocol = 'ftp';
+tap.test('Custom protocol', async (t) => {
+	const server = createServer();
 
-		// Using `ListenOptions` interface
-		const address = await listen(server);
+	// @ts-expect-error `protocol` is not defined on `net.Server`
+	server.protocol = 'ftp';
 
-		t.equal(address.protocol, 'ftp:');
-		server.close();
-	});
+	// Using `ListenOptions` interface
+	const address = await listen(server);
 
-	t.end();
+	t.equal(address.protocol, 'ftp:');
+	server.close();
 });
 
 tap.test('EADDRINUSE is thrown', async (t) => {
