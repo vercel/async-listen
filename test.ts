@@ -5,6 +5,11 @@ import { resolve } from 'path';
 import { AddressInfo, createServer } from 'net';
 import { listen } from './src';
 
+const testIf = (condition: boolean, ...args: Parameters<typeof tap.test>) =>
+	condition ? tap.test(...args) : tap.skip(...args);
+
+const isWindows = process.platform === 'win32';
+
 tap.test('No arguments', async (t) => {
 	const server = createServer();
 	const address = await listen(server);
@@ -15,10 +20,10 @@ tap.test('No arguments', async (t) => {
 
 tap.test('Invalid arguments', async (t) => {
 	const server = createServer();
-	(() => {
+	() => {
 		// @ts-expect-error Passed a RegExp, which is not expected
 		listen(server, 0, 'adfs', /regexp-not-allowed/);
-	});
+	};
 });
 
 tap.test('Throws error if `address()` returns null', async (t) => {
@@ -28,7 +33,7 @@ tap.test('Throws error if `address()` returns null', async (t) => {
 	server.close();
 });
 
-tap.test('Returns URL for UNIX pipe', async (t) => {
+testIf(!isWindows, 'Returns URL for UNIX pipe', async (t) => {
 	const server = createServer();
 	const socket = 'unix.sock';
 	const address = await listen(server, socket);
@@ -44,7 +49,7 @@ tap.test('Server autodetect', (t) => {
 		// Using `ListenOptions` interface
 		const address = await listen(server, {
 			port: 0,
-			host: '127.0.0.1'
+			host: '127.0.0.1',
 		});
 
 		t.equal(address.protocol, 'http:');
@@ -61,7 +66,7 @@ tap.test('Server autodetect', (t) => {
 		server.close();
 	});
 
-	t.test('http - UNIX pipe', async (t) => {
+	testIf(!isWindows, 'http - UNIX pipe', async (t) => {
 		const socket = 'http.sock';
 		const server = http.createServer();
 		const address = await listen(server, socket);
@@ -69,7 +74,7 @@ tap.test('Server autodetect', (t) => {
 		server.close();
 	});
 
-	t.test('https - UNIX pipe', async (t) => {
+	testIf(!isWindows, 'https - UNIX pipe', async (t) => {
 		const socket = 'https.sock';
 		const server = https.createServer();
 		const address = await listen(server, socket);
