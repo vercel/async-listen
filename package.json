@@ -2,7 +2,7 @@
   "name": "async-listen",
   "description": "`net.Server#listen()` helper that returns a Promise for async / await",
   "homepage": "https://github.com/vercel/async-listen#readme",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "main": "./dist/index.js",
   "contributors": [
     {
