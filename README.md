@@ -4,8 +4,8 @@ Promisify `server.listen` for your HTTP/HTTPS/TCP server.
 
 ## Install
 
-```
-$ npm install async-listen --save
+```sh
+npm install async-listen
 ```
 
 ## Usage
