@@ -14,7 +14,7 @@
     "promise",
     "server"
   ],
-  "packageManager": "pnpm@8.6.7",
+  "packageManager": "pnpm@7.33.3",
   "devDependencies": {
     "@types/node": "^18.15.10",
     "@types/tap": "^15.0.8",
