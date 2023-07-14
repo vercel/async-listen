@@ -2,9 +2,13 @@ name: CI
 
 on:
   push:
-    branches: ['master', 'main']
+    branches: ['main']
   pull_request:
     type: [opened, synchronize]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   test:
