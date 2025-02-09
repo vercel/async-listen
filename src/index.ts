@@ -23,6 +23,10 @@ export async function listen<Server extends ServerLike>(
 ): Promise<URL> {
 	server.listen(...args, () => {});
 	await once(server, 'listening');
+	return endpoint(server);
+}
+
+export function endpoint(server: ServerLike): URL {
 	const addressInfo = server.address();
 
 	if (!addressInfo) {
