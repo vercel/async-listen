@@ -3,7 +3,7 @@ import * as http from 'http';
 import * as https from 'https';
 import { resolve } from 'path';
 import { AddressInfo, createServer } from 'net';
-import { listen } from './src';
+import { endpoint, listen } from './src';
 
 const testIf = (condition: boolean, ...args: Parameters<typeof tap.test>) =>
 	condition ? tap.test(...args) : tap.skip(...args);
@@ -14,6 +14,7 @@ tap.test('No arguments', async (t) => {
 	const server = createServer();
 	const address = await listen(server);
 	t.ok(address instanceof URL);
+	t.equal(endpoint(server).toString(), address.toString());
 	t.equal(address.protocol, 'tcp:');
 	server.close();
 });
@@ -38,6 +39,7 @@ testIf(!isWindows, 'Returns URL for UNIX pipe', async (t) => {
 	const socket = 'unix.sock';
 	const address = await listen(server, socket);
 	t.equal(address.protocol, 'unix:');
+	t.equal(endpoint(server).toString(), address.toString());
 	t.equal(address.host, encodeURIComponent(resolve(socket)));
 	server.close();
 });
@@ -51,6 +53,7 @@ tap.test('http', async (t) => {
 		host: '127.0.0.1',
 	});
 
+	t.equal(endpoint(server).toString(), address.toString());
 	t.equal(address.protocol, 'http:');
 	server.close();
 });
@@ -61,6 +64,7 @@ tap.test('https', async (t) => {
 	// Using `port`, `host` interface
 	const address = await listen(server, 0, '127.0.0.1');
 
+	t.equal(endpoint(server).toString(), address.toString());
 	t.equal(address.protocol, 'https:');
 	server.close();
 });
@@ -69,6 +73,7 @@ testIf(!isWindows, 'http - UNIX pipe', async (t) => {
 	const socket = 'http.sock';
 	const server = http.createServer();
 	const address = await listen(server, socket);
+	t.equal(endpoint(server).toString(), address.toString());
 	t.equal(address.protocol, 'http+unix:');
 	server.close();
 });
@@ -77,6 +82,7 @@ testIf(!isWindows, 'https - UNIX pipe', async (t) => {
 	const socket = 'https.sock';
 	const server = https.createServer();
 	const address = await listen(server, socket);
+	t.equal(endpoint(server).toString(), address.toString());
 	t.equal(address.protocol, 'https+unix:');
 	server.close();
 });
@@ -90,6 +96,7 @@ tap.test('Custom protocol', async (t) => {
 	// Using `ListenOptions` interface
 	const address = await listen(server);
 
+	t.equal(endpoint(server).toString(), address.toString());
 	t.equal(address.protocol, 'ftp:');
 	server.close();
 });
@@ -106,6 +113,7 @@ tap.test('EADDRINUSE is thrown', async (t) => {
 tap.test('IPv6 support', async (t) => {
 	const server = http.createServer();
 	const url = await listen(server);
+	t.equal(endpoint(server).toString(), url.toString());
 	t.equal((server.address() as AddressInfo).family, 'IPv6');
 	t.equal(url.hostname, '[::]');
 	server.close();
