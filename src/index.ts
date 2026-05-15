@@ -22,7 +22,10 @@ export async function listen<Server extends ServerLike>(
 	...args: OverloadedParameters<Server['listen']>
 ): Promise<URL> {
 	server.listen(...args, () => {});
-	await once(server, 'listening');
+	const result = await Promise.race([
+		once(server, 'listening').then(() => 'listening' as const),
+		once(server, 'error').then((err) => Promise.reject(err)),
+	]);
 	return endpoint(server);
 }
 
